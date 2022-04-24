@@ -58,6 +58,41 @@ const Mutation = new GraphQLObjectType({
         return models.todos.create(todo);// to get the data back as well after adding
       },
     },
+    deleteTodo: {
+      type: new GraphQLList(TodoType),
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+      },
+      async resolve(parent, args) {
+        await models.todos.destroy({
+          where: {
+            id: args.id,
+          },
+        });
+        return models.todos.findAll();
+      },
+    },
+    updateTodo: {
+      type: TodoType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) },
+        title: { type: new GraphQLNonNull(GraphQLString) },
+        description: { type: new GraphQLNonNull(GraphQLString) },
+
+      },
+      async resolve(parent, args) {
+        await models.todos.update({ title: args.title, description: args.description }, {
+          where: {
+            id: args.id,
+          },
+        });
+        return models.todos.findOne({
+          where: {
+            id: args.id,
+          },
+        });
+      },
+    },
   },
 });
 module.exports = new GraphQLSchema({
