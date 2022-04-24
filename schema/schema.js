@@ -19,6 +19,9 @@ const TodoType = new GraphQLObjectType({
     description: { type: GraphQLString },
   }),
 });
+
+// query operations fetch data.
+
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
@@ -41,6 +44,8 @@ const RootQuery = new GraphQLObjectType({
     },
   },
 });
+
+// mutation operations change state
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
@@ -55,7 +60,7 @@ const Mutation = new GraphQLObjectType({
           title: args.title,
           description: args.description,
         };
-        return models.todos.create(todo);// to get the data back as well after adding
+        return models.todos.create(todo);
       },
     },
     deleteTodo: {
